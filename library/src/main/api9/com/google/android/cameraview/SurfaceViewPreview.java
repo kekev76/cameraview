@@ -24,7 +24,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 
-class SurfaceViewPreview extends PreviewImpl {
+public class SurfaceViewPreview extends PreviewImpl {
 
     final SurfaceView mSurfaceView;
 

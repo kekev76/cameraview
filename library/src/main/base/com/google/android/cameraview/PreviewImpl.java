@@ -77,5 +77,4 @@ abstract class PreviewImpl {
     int getHeight() {
         return mHeight;
     }
-
 }
