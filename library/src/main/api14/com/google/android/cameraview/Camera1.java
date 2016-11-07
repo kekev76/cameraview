@@ -24,6 +24,7 @@ import android.support.v4.util.SparseArrayCompat;
 import android.view.SurfaceHolder;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
@@ -415,6 +416,30 @@ class Camera1 extends CameraViewImpl {
             mFlash = flash;
             return false;
         }
+    }
+
+    public Camera.Parameters getParameters(){
+        return mCamera.getParameters();
+    }
+
+    @Override
+    List<Size> getPictureSizes() {
+        ArrayList<Size> picturesSizes = new ArrayList<>();
+        for (Camera.Size size : mCamera.getParameters().getSupportedPictureSizes()) {
+            picturesSizes.add(new Size(size.width, size.height));
+        }
+        
+        return picturesSizes;
+    }
+
+    @Override
+    List<Size> getPreviewSizes() {
+        ArrayList<Size> previewSizes = new ArrayList<>();
+        for (Camera.Size size : mCamera.getParameters().getSupportedPreviewSizes()) {
+            previewSizes.add(new Size(size.width, size.height));
+        }
+
+        return previewSizes;
     }
 
 }

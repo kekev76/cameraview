@@ -30,14 +30,15 @@ import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.Surface;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 
@@ -55,8 +56,7 @@ class Camera2 extends CameraViewImpl {
 
     private final CameraManager mCameraManager;
 
-    private final CameraDevice.StateCallback mCameraDeviceCallback
-            = new CameraDevice.StateCallback() {
+    private final CameraDevice.StateCallback mCameraDeviceCallback = new CameraDevice.StateCallback() {
 
         @Override
         public void onOpened(@NonNull CameraDevice camera) {
@@ -190,11 +190,11 @@ class Camera2 extends CameraViewImpl {
         super(callback, preview);
         mCameraManager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
         mPreview.setCallback(new PreviewImpl.Callback() {
-                @Override
-                public void onSurfaceChanged() {
-                    startCaptureSession();
-                }
-            });
+            @Override
+            public void onSurfaceChanged() {
+                startCaptureSession();
+            }
+        });
     }
 
     @Override
@@ -332,6 +332,39 @@ class Camera2 extends CameraViewImpl {
         mPreview.setDisplayOrientation(mDisplayOrientation);
     }
 
+    @Override
+    Object getParameters() {
+        return null;
+    }
+
+    @Override
+    List<Size> getPictureSizes() {
+
+        ArrayList<Size> pictureSizes = new ArrayList<>();
+        StreamConfigurationMap map = mCameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
+        if (map == null) {
+            throw new IllegalStateException("Failed to get configuration map: " + mCameraId);
+        }
+        for (android.util.Size size : map.getOutputSizes(ImageFormat.JPEG)) {
+            pictureSizes.add(new Size(size.getWidth(), size.getHeight()));
+        }
+        return pictureSizes;
+    }
+
+    @Override
+    List<Size> getPreviewSizes() {
+
+        ArrayList<Size> previewSizes = new ArrayList<>();
+        StreamConfigurationMap map = mCameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
+        if (map == null) {
+            throw new IllegalStateException("Failed to get configuration map: " + mCameraId);
+        }
+        for (android.util.Size size : map.getOutputSizes(mPreview.getOutputClass())) {
+            previewSizes.add(new Size(size.getWidth(), size.getHeight()));
+        }
+        return previewSizes;
+    }
+
     /**
      * <p>Chooses a camera ID by the specified camera facing ({@link #mFacing}).</p>
      * <p>This rewrites {@link #mCameraId}, {@link #mCameraCharacteristics}, and optionally
@@ -386,9 +419,11 @@ class Camera2 extends CameraViewImpl {
             throw new IllegalStateException("Failed to get configuration map: " + mCameraId);
         }
         mPreviewSizes.clear();
+
         for (android.util.Size size : map.getOutputSizes(mPreview.getOutputClass())) {
             mPreviewSizes.add(new Size(size.getWidth(), size.getHeight()));
         }
+
         mPictureSizes.clear();
         collectPictureSizes(mPictureSizes, map);
 

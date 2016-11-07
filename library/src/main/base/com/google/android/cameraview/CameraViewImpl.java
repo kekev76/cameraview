@@ -18,6 +18,7 @@ package com.google.android.cameraview;
 
 import android.view.View;
 
+import java.util.List;
 import java.util.Set;
 
 abstract class CameraViewImpl {
@@ -62,6 +63,12 @@ abstract class CameraViewImpl {
     abstract void takePicture();
 
     abstract void setDisplayOrientation(int displayOrientation);
+
+    abstract Object getParameters();
+
+    abstract List<Size> getPictureSizes();
+
+    abstract List<Size> getPreviewSizes();
 
     interface Callback {
 
