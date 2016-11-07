@@ -389,8 +389,8 @@ public class CameraView extends FrameLayout {
         return mImpl.getFlash();
     }
 
-    public void setSize(int w, int h) {
-        preview.setSize(w, h);
+    public PreviewImpl getPreview() {
+        return preview;
     }
 
     public CameraViewImpl getImpl(){
