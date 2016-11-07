@@ -43,7 +43,7 @@ import java.util.Set;
 import java.util.SortedSet;
 
 @TargetApi(21)
-class Camera2 extends CameraViewImpl {
+public class Camera2 extends CameraViewImpl {
 
     private static final String TAG = "Camera2";
 

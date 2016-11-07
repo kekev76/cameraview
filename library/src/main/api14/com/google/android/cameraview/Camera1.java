@@ -30,7 +30,7 @@ import java.util.Set;
 import java.util.SortedSet;
 
 @SuppressWarnings("deprecation")
-class Camera1 extends CameraViewImpl {
+public class Camera1 extends CameraViewImpl {
 
     private static final int INVALID_CAMERA_ID = -1;
 
