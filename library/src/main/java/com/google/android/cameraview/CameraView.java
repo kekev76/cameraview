@@ -446,7 +446,7 @@ public class CameraView extends FrameLayout {
         @Override
         public void onPictureTaken(byte[] data) {
             for (Callback callback : mCallbacks) {
-                callback.onPictureTaken(CameraView.this, fitViewport(data));
+                callback.onPictureTaken(CameraView.this, data);
             }
         }
 

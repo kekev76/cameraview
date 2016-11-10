@@ -586,11 +586,9 @@ public class Camera2 extends CameraViewImpl {
      */
     void captureStillPicture() {
         try {
-            CaptureRequest.Builder captureRequestBuilder = mCamera.createCaptureRequest(
-                    CameraDevice.TEMPLATE_STILL_CAPTURE);
+            CaptureRequest.Builder captureRequestBuilder = mCamera.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
             captureRequestBuilder.addTarget(mImageReader.getSurface());
-            captureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,
-                    mPreviewRequestBuilder.get(CaptureRequest.CONTROL_AF_MODE));
+            captureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, mPreviewRequestBuilder.get(CaptureRequest.CONTROL_AF_MODE));
             switch (mFlash) {
                 case Constants.FLASH_OFF:
                     captureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,
@@ -619,8 +617,7 @@ public class Camera2 extends CameraViewImpl {
             }
             // Calculate JPEG orientation.
             @SuppressWarnings("ConstantConditions")
-            int sensorOrientation = mCameraCharacteristics.get(
-                    CameraCharacteristics.SENSOR_ORIENTATION);
+            int sensorOrientation = mCameraCharacteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
             captureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION,
                     (sensorOrientation +
                             mDisplayOrientation * (mFacing == Constants.FACING_FRONT ? 1 : -1) +
